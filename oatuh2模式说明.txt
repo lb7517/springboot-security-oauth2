@@ -1,0 +1,48 @@
+bearer ca274f3e-2814-4901-a9cf-b29ac8a6801d
+
+http://127.0.0.1:8080/api/blog/{1}
+
+> 1. oauth2授权模式如下4中:
+
+A. 授权码模式: 都是由客户端服务区获取code,token; response_type必选且为code,
+1. 获取code
+方式一:
+http://localhost:8080/oauth/authorize?response_type=code&client_id=demoApp&redirect_uri=http://baidu.com
+http://baidu.com/?code=9h0MXX
+
+方式二:
+http://localhost:8080/oauth/authorize?response_type=code&client_id=demoApp&state=1234
+http://baidu.com/?code=Sb2nYQ&state=1234
+
+
+2. 通过code获取access_token，可以不传密码; grant_type必选且为authorization_code
+http://localhost:8080/oauth/token?grant_type=authorization_code&code=Sb2nYQ&client_id=demoApp&client_secret=demoAppSecret&redirect_uri=http://baidu.com
+http://localhost:8080/oauth/token?grant_type=authorization_code&code=Sb2nYQ&client_id=demoApp&redirect_uri=http://baidu.com  //？？？？ 不传密码有问题
+
+
+返回:
+{
+  "access_token": "e8f45e61-5561-432d-84a6-34b358497ef1",
+  "token_type": "bearer",
+  "refresh_token": "8a4479fe-4993-4b15-936e-a7d85de1a803",
+  "expires_in": 1199,
+  "scope": "all"
+}
+
+
+B.简化模式:
+授权码模式去掉客户端服务
+
+
+C. 密码模式: grant_type固定是password
+http://localhost:8080/oauth/token?username=cxh&password=cxh&grant_type=password&client_id=demoApp&client_secret=demoAppSecret
+
+
+D.客户端模式: 弹出登入框输入客户端id和密码即(demoApp/demoAppSecret)
+http://localhost:8080/oauth/token?grant_type=client_credentials
+
+
+> 2. 刷新令牌 (granttype：表示使用的授权模式，此处的值固定为"refreshtoken"，必选项; refresh_token表示早前收到的更新令牌，必选项)   
+http://localhost:8080/oauth/token?grant_type=refresh_token&refresh_token=3fb9c688-1f4f-4411-8e4a-7b8613e23e51  //有异常？？？？
+
+
